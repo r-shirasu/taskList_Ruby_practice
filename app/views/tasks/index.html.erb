@@ -6,4 +6,17 @@
   <% end %>
 </ul>
 
-<%= link_to '新規投稿', new_task_path %>
+<%= link_to '新投稿', new_task_path %>
+
+<%= link_to 'ログアウト', login_path %>
+
+<% if logged_in? %>
+  <p>ログイン完了ユーザ: <%= current_user.name %></p>
+<% else %>
+  <div class="center jumbotron">
+    <div class="text-center">
+      <h1>Welcome to the Microposts</h1>
+      <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
+    </div>
+  </div>
+<% end %>
