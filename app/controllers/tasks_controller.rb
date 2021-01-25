@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :require_user_logged_in, only: [:index, :show,]
   
   def index
     @tasks = Task.all
@@ -60,9 +61,10 @@ class TasksController < ApplicationController
   params.require(:task).permit(:content, :status)
   end
   
-  def require_user_logged_in
-    unless logged_in?
-      redirect_to login_url
+  def correct_user
+    @task = current_user.microposts.find_by(id: params[:id])
+    unless @task
+      redirect_to root_url
     end
   end
   
