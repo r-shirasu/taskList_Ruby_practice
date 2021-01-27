@@ -3,11 +3,15 @@ class TasksController < ApplicationController
   before_action :correct_user, only: [:destroy, :show]
   
   def index
-    @tasks = Task.all
+    if logged_in?
+      @task = current_user.tasks.build  # form_with 用
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page])
+    end
   end
   
   def show
-    @task = Task.find(params[:id])
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page])
+    #@task = current_user.tasks.build(task_params)
     
   end
 
@@ -60,7 +64,7 @@ class TasksController < ApplicationController
   end
   
   def task_params
-  params.permit(:content, :status)
+  params.require(:task).permit(:content, :status)
   end
   
   def correct_user
