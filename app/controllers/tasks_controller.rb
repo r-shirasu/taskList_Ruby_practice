@@ -1,13 +1,13 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in, only: [:index, :create, :destroy, :edit, :update, :show, :new]
-  before_action :correct_user, only: [:destroy, :edit, :update, :show, :new]
+  before_action :correct_user, only: [:destroy, :edit, :update, :show]
   
   def index
       @tasks = current_user.tasks.order(id: :desc).page(params[:page])
   end
   
   def show
-      @tasks = current_user.tasks.order(id: :desc).page(params[:page])
+      set_task
   end
 
   def new
@@ -27,11 +27,11 @@ class TasksController < ApplicationController
   end
   
   def edit
-    @task = Task.find(params[:id])
+    set_task
   end
   
   def update
-    @task = Task.find(params[:id])
+    set_task
     
     if @task.update(task_params)
     flash[:success] = 'Task は正常に更新されました'
